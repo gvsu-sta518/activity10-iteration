@@ -35,7 +35,7 @@ In the space below, load `{tidyverse}` and `{rvest}`.
 The core functions that you may find useful are:
 
 - `read_html`: reads HTML data from a URL or character string
-- `html_nodes`: selects specified nodes from the HTML document using CSS selectors
+- `html_elements`: selects specified nodes from the HTML document using CSS selectors
 - `html_table`: parses an HTML table into a data frame
 - `html_text`: extracts tag pairs' content
 - `html_name`: extracts tags' names.
@@ -95,13 +95,22 @@ scrape_tmdb <- function(url){
   
   page <- read_html(url)
   
+  # Scrape show tile
+  title <- page %>% 
+    html_element("h2 a") %>% 
+    html_text()
+  
   # Update this part of the function to scrape the appropriate information
+  year <- page %>% 
+    
+    
+  rating <- page %>% 
+    
   
   # Scrape TMDB score
   score <- page %>% 
-    html_node("span.icon") %>% 
-    html_attr("class") %>% 
-    str_replace(".+r(.+)", "\\1") %>% # `\\1` refers to string matched by the first capture group `(.+)`
+    html_element("div.user_score_chart") %>% 
+    html_attr("data-percent") %>% 
     as.numeric()
   
   # Output a tibble with one row that contains the above scraped information
